@@ -42,15 +42,18 @@ function App() {
       })
       .catch((error) => {
         setUser({});
-        console.log("error")
       })
   }
   return (
     <div className="App">
+      {
+        user.email ? <button onClick={handleGoogleSignOut} > Sign Out</button> :
+          <>
+            <button onClick={handleGoogleSignIn}>Google Sign In</button>
+            <button onClick={handleGithubSignIn}>GitHub Sign In</button>
+          </>
+      }
 
-      <button onClick={handleGoogleSignIn} >Google Sign In</button>
-      <button onClick={handleGoogleSignOut}>Google Sign Out</button> <br />
-      <button onClick={handleGithubSignIn}>GitHub Sign In</button>
       <h2>Name: {user.displayName}</h2>
       <h4>Email: {user.email}</h4>
       <h4>UniqueID: {user.uid}</h4>
