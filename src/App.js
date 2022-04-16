@@ -13,11 +13,11 @@ function App() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [register, setRegister] = useState(false);
 
   const handleEmailBlur = (event) => {
     setEmail(event.target.value);
   }
-
   const handlePasswordBlur = (event) => {
     setPassword(event.target.value);
   }
@@ -35,10 +35,14 @@ function App() {
     event.preventDefault();
   }
 
+  const handleRegistration = event => {
+    setRegister(event.target.checked);
+  }
+
   return (
     <div>
       <div className="registration w-50 mx-auto">
-        <h2 className='text-primary  mt-4'> Please Register</h2>
+        <h2 className='text-primary  mt-4'> Please {register ? 'Log-In' : 'Register'}</h2>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
@@ -52,7 +56,9 @@ function App() {
             <Form.Label>Password</Form.Label>
             <Form.Control onBlur={handlePasswordBlur} type="password" placeholder="Password" required />
           </Form.Group>
-
+          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+            <Form.Check onChange={handleRegistration} type="checkbox" label="Registered Already ?" />
+          </Form.Group>
           <Button variant="primary" type="submit">
             Submit
           </Button>
