@@ -1,72 +1,67 @@
-import { getAuth, GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import './App.css';
 import app from "./firebase.init";
+import Form from 'react-bootstrap/Form';
+import { Button } from 'react-bootstrap';
 
 const auth = getAuth(app);
 
 function App() {
 
-  // const [user, setUser] = useState({});
 
-  // const googleProvider = new GoogleAuthProvider();/* etar jonno pop-up asbe */
-  // const githubProvider = new GithubAuthProvider();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  // const handleGoogleSignIn = () => {
-  //   signInWithPopup(auth, googleProvider) /*firebase theke imported etao*/
-  //     .then(result => {
-  //       const user = result.user;
-  //       setUser(user);
-  //       console.log(user);
-  //     })
-  //     .catch(error => {
-  //       console.error('error : ', error);
-  //     })
-  // };
+  const handleEmailBlur = (event) => {
+    setEmail(event.target.value);
+  }
 
-  // const handleGithubSignIn = () => {
-  //   signInWithPopup(auth, githubProvider)
-  //     .then(result => {
-  //       const user = result.user;
-  //       setUser(user);
-  //     })
-  //     .catch(error => {
-  //       console.error(error);
-  //     })
-  // };
+  const handlePasswordBlur = (event) => {
+    setPassword(event.target.value);
+  }
 
-  // const handleGoogleSignOut = () => {
-  //   signOut(auth)
-  //     .then(() => {
-  //       setUser({});
-  //     })
-  //     .catch((error) => {
-  //       setUser({});
-  //     })
-  // }
+  const handleSubmit = (event) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(result => {
+        const user = result.user;
+        console.log(user);
+      })
+      .catch(error => {
+        console.error(error);
+      })
+    console.log('SUBMITTED: ', email, password);
+    event.preventDefault();
+  }
+
   return (
-    <div className="App">
-      {/* {
-        user.uid ? <button onClick={handleGoogleSignOut} > Sign Out</button> :
-          <>
-            <button onClick={handleGoogleSignIn}>Google Sign In</button>
-            <button onClick={handleGithubSignIn}>GitHub Sign In</button>
-          </>
-      }
+    <div>
+      <div className="registration w-50 mx-auto">
+        <h2 className='text-primary  mt-4'> Please Register</h2>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control onBlur={handleEmailBlur} type="email" placeholder="Enter email" required />
+            <Form.Text className="text-muted">
+              We'll never share your email with anyone else.
+            </Form.Text>
+          </Form.Group>
 
-      <h2>Name: {user.displayName}</h2>
-      <h4>Email: {user.email}</h4>
-      <h4>UniqueID: {user.uid}</h4> */}
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control onBlur={handlePasswordBlur} type="password" placeholder="Password" required />
+          </Form.Group>
 
-
-      {/*------------- Module : 57 ----------------*/}
-      <form>
-        <input type="text" />
-        <input type="password" name="" id="" />
-      </form>
-
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+      </div>
     </div>
   );
 }
 
 export default App;
+
+/*--------- Module: 57------- */
