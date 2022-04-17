@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, getAuth, sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword } from 'firebase/auth';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import './App.css';
@@ -59,6 +59,13 @@ function App() {
       })
   }
 
+  const handlePasswordReset = () => {
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        console.log('Email Sent');
+      })
+  }
+
   return (
     <div>
       <div className="registration w-50 mx-auto">
@@ -82,6 +89,7 @@ function App() {
           <Button variant="primary" type="submit">
             {register ? 'Log-In' : 'Register'}
           </Button>
+          <Button onClick={handlePasswordReset} variant="link">Forget Password?</Button>
         </Form>
       </div>
     </div>
