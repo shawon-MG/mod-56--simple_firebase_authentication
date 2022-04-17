@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, sendEmailVerification, signInWithEmailAndPassword } from 'firebase/auth';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import './App.css';
@@ -42,6 +42,7 @@ function App() {
         .then(result => {
           const user = result.user;
           console.log(user);
+          emailVarification();
         })
         .catch(error => {
           console.error(error);
@@ -49,6 +50,13 @@ function App() {
     }
     console.log('SUBMITTED: ', email, password);
     event.preventDefault();
+  }
+
+  const emailVarification = () => {
+    sendEmailVerification(auth.currentUser)
+      .then(() => {
+        console.log('Email Varification Sent');
+      })
   }
 
   return (
