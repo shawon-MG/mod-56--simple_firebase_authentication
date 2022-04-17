@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
 import './App.css';
@@ -22,21 +22,33 @@ function App() {
     setPassword(event.target.value);
   }
 
-  const handleSubmit = (event) => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(result => {
-        const user = result.user;
-        console.log(user);
-      })
-      .catch(error => {
-        console.error(error);
-      })
-    console.log('SUBMITTED: ', email, password);
-    event.preventDefault();
-  }
-
   const handleRegistration = event => {
     setRegister(event.target.checked);
+  }
+
+  const handleSubmit = (event) => {
+    if (register) {
+      signInWithEmailAndPassword(auth, email, password)
+        .then(result => {
+          const user = result.user;
+          console.log(user);
+        })
+        .catch(error => {
+          console.error(error);
+        })
+    }
+    else {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(result => {
+          const user = result.user;
+          console.log(user);
+        })
+        .catch(error => {
+          console.error(error);
+        })
+    }
+    console.log('SUBMITTED: ', email, password);
+    event.preventDefault();
   }
 
   return (
@@ -60,7 +72,7 @@ function App() {
             <Form.Check onChange={handleRegistration} type="checkbox" label="Registered Already ?" />
           </Form.Group>
           <Button variant="primary" type="submit">
-            Submit
+            {register ? 'Log-In' : 'Register'}
           </Button>
         </Form>
       </div>
